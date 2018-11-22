@@ -10,7 +10,7 @@ public class Box {
 	private Socket socket;
 	
 	public Box() {
-		
+		this.cells = new Cell[9];
 	}
 
 	public String getName() {
