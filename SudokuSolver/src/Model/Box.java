@@ -1,10 +1,17 @@
 package Model;
 
+import java.net.Socket;
+
 public class Box {
 
 	private String name;
 	private Cell[] cells;
 	private String[] neighbours;
+	private Socket socket;
+	
+	public Box() {
+		
+	}
 
 	public String getName() {
 		return name;
