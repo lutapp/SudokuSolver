@@ -4,7 +4,7 @@ public class Box {
 
 	private String name;
 	private Cell[] cells;
-	private String[] neighbors;
+	private String[] neighbours;
 
 	public String getName() {
 		return name;
