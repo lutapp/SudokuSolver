@@ -6,11 +6,5 @@ public class Main {
 
 	}
 
-	private void connectToManager() {
-	}
-
-	private void connectToNeighbours() {
-
-	}
 
 }
