@@ -2,10 +2,10 @@ package Controller;
 
 public class Helper {
 
-	private void connectToManager() {
+	public static void connectToManager() {
 	}
 
-	private void connectToNeighbours() {
+	public static void connectToNeighbours() {
 
 	}
 }
