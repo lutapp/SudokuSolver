@@ -2,7 +2,11 @@ package Controller;
 
 import Exception.ProcessArgumentException;
 import Model.Box;
-import Model.Cell;
+import Model.ManagerConnectionThread;
+import java.io.IOException;
+import java.net.Inet4Address;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Main {
     
@@ -18,17 +22,30 @@ public class Main {
             e.printStackTrace();
             System.exit(0);
         }
-        // TODO: Implement sockets and proper concurrency measures to avoid locking
-        // Connect to Manager and receive neighbour addresses;
-        // Assign neighbour connections to box;
-        // Propagate initial state to neighbours;
-        // Receive and parse messages from neighbours;
-        // Apply gained knowledge to possibleValues list in Cell class;
-        // Propagate new cell value to neighbours if only one possibility remains
-        // Repeat until finished
-        // Be able to recognize finished state
-        // Send end result to manager
-        // Terminate all connections
+		try {
+			System.out.println(Inet4Address.getLocalHost().getHostAddress());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			ManagerConnectionThread thread = new ManagerConnectionThread(managerAddress, managerPort);
+			thread.start();
+			String messageToManager = box.getName() + ", " + Inet4Address.getLocalHost().getHostAddress() + ", 4343";
+			thread.sendLine(messageToManager);
+			// TODO: Implement sockets and proper concurrency measures to avoid locking
+			// Connect to Manager and receive neighbour addresses;
+			// Assign neighbour connections to box;
+			// Propagate initial state to neighbours;
+			// Receive and parse messages from neighbours;
+			// Apply gained knowledge to possibleValues list in Cell class;
+			// Propagate new cell value to neighbours if only one possibility remains
+			// Repeat until finished
+			// Be able to recognize finished state
+			// Send end result to manager
+			// Terminate all connections
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
     }
 
     private static void parseArgs(String[] args) throws ProcessArgumentException {
