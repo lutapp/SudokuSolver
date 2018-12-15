@@ -1,20 +1,19 @@
 package Model;
 
+import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 
 public class Box {
 
     private String name;
     private Cell[][] cells = new Cell[3][3];
-    private ArrayList<String> neighbours = new ArrayList<String>();
+    private ArrayList<BoxNeighbourSocket> neighbours = new ArrayList<BoxNeighbourSocket>();
+    private BoxServer serverThread;
 
-    public Box() {
+    public Box() throws IOException {
         this.initializeCells();
-    }
-    
-    public Box(String name) {
-        this.name = name;
-        this.initializeCells();
+        this.serverThread = new BoxServer(this);
     }
     
     // Since cells are objects, initialize each of them manually
@@ -35,7 +34,7 @@ public class Box {
         return this;
     }
     
-    public Box addNeighbour(String neighbour) {
+    public Box addNeighbour(BoxNeighbourSocket neighbour) {
         this.neighbours.add(neighbour);
         return this;
     }
@@ -72,6 +71,49 @@ public class Box {
             result[i] = this.cells[i][row];
         }
         return result;
+    }
+    
+    public ArrayList<String> getNeighbourNames() {
+    	String[][] SudokuStructure = {{"BOX_A1", "BOX_D1", "BOX_G1"}, {"BOX_A4", "BOX_D4", "BOX_G4"}, {"BOX_A7", "BOX_D7", "BOX_G7"}};
+    	int row = -1;
+    	int col = -1;
+    	
+    	for(int i = 0; i < SudokuStructure.length; i++) {
+    		for(int j = 0; j < SudokuStructure[i].length; j++) {
+    			if (SudokuStructure[i][j].equals(this.name)) {
+    				row = i;
+    				col = j;
+    			}
+    		}
+    	}
+    	
+    	if (row != -1 && col != -1) {
+    		ArrayList<String> output = new ArrayList<String>();
+    		try {
+    			output.add(SudokuStructure[row-1][col]);
+    		} catch (ArrayIndexOutOfBoundsException e) {	
+    		}
+    		try {
+    			output.add(SudokuStructure[row+1][col]);
+    		} catch (ArrayIndexOutOfBoundsException e) {	
+    		}
+    		try {
+    			output.add(SudokuStructure[row][col-1]);
+    		} catch (ArrayIndexOutOfBoundsException e) {	
+    		}
+    		try {
+    			output.add(SudokuStructure[row][col+1]);
+    		} catch (ArrayIndexOutOfBoundsException e) {	
+    		}
+    		
+    		return output;
+    	} else {
+    		return null;
+    	}
+    }
+    
+    public int getServerPort() {
+    	return this.serverThread.getPort();
     }
     
     // prints current state of the box

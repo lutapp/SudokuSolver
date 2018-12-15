@@ -5,33 +5,30 @@ import Model.Box;
 import Model.ManagerConnectionThread;
 import java.io.IOException;
 import java.net.Inet4Address;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
 
 public class Main {
     
-    static Box box = new Box();
+    static Box box;
     static String managerAddress;
     static int managerPort;
     
 
     public static void main(String[] args) {
-        try {
+    	try {
+    		box = new Box();
             parseArgs(args);
-        } catch (ProcessArgumentException e) {
-            e.printStackTrace();
-            System.exit(0);
-        }
-		try {
 			System.out.println(Inet4Address.getLocalHost().getHostAddress());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		try {
+			System.out.println("I am " + box.getName() + "; Connecting to manager");
 			ManagerConnectionThread thread = new ManagerConnectionThread(managerAddress, managerPort);
 			thread.start();
-			String messageToManager = box.getName() + ", " + Inet4Address.getLocalHost().getHostAddress() + ", 4343";
+			String messageToManager = box.getName() + ", " + Inet4Address.getLocalHost().getHostAddress() + ", " + box.getServerPort();
 			thread.sendLine(messageToManager);
+			ArrayList<String> neighbours = box.getNeighbourNames();
+			for (String neighbour: neighbours) {
+				System.out.println(neighbour);
+				thread.sendLine(neighbour);
+			}
 			// TODO: Implement sockets and proper concurrency measures to avoid locking
 			// Connect to Manager and receive neighbour addresses;
 			// Assign neighbour connections to box;
@@ -43,9 +40,10 @@ public class Main {
 			// Be able to recognize finished state
 			// Send end result to manager
 			// Terminate all connections
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
+    	} catch (Exception e) {
+            e.printStackTrace();
+            System.exit(0);
+        }
     }
 
     private static void parseArgs(String[] args) throws ProcessArgumentException {

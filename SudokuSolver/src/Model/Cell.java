@@ -23,7 +23,7 @@ public class Cell {
     // Reinitializes the possibleValues list if a value gets set, so the list is empty
     public Cell setValue(int value) {
         this.value = value;
-        this.possibleValues = new ArrayList<Integer>();
+        this.possibleValues.clear();
         return this;
     }
     
