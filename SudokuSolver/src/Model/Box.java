@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import Controller.Main;
+
 public class Box {
 
     private String name;
@@ -34,8 +36,9 @@ public class Box {
         return this;
     }
     
-    public Box addNeighbour(BoxNeighbourSocket neighbour) {
+    public synchronized Box addNeighbour(BoxNeighbourSocket neighbour) {
         this.neighbours.add(neighbour);
+        neighbour.start();
         return this;
     }
     
@@ -47,10 +50,24 @@ public class Box {
     // so they know this value is no longer possible for them to have
     public Box setCellValue(int column, int row, int value) {
         this.cells[column][row].setValue(value);
+        String relative = this.name + ',' + this.cells[column][row].getColumn() + ',' + this.cells[column][row].getRow() + ':' + this.cells[column][row].getValue();
+    	String absolute = this.cells[column][row].getAbsoluteCoordinate() + ':' + this.cells[column][row].getValue();
+    	PendingMessageHandler.addMessageToPending(relative);
+    	PendingMessageHandler.addMessageToPending(absolute);
+    	PendingMessageHandler pmh = new PendingMessageHandler(this.neighbours);
+    	pmh.start();
+    	System.out.println(relative + "  " + absolute);
+        int emptyCellCounter = 0;
         for (Cell[] cellColumn : this.cells) {
             for (Cell cell : cellColumn) {
                 cell.removeFromPossibilities(value);
+                if (cell.getValue() == 0) {
+                	emptyCellCounter++;
+                }
             }
+        }
+        if (emptyCellCounter == 0) {
+        	Main.wrapUpConnections();
         }
         return this;
     }

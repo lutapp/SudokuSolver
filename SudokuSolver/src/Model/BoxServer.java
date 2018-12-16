@@ -21,7 +21,7 @@ public class BoxServer extends Thread{
 	public void run() {
 		while(true) {
 			try {
-				BoxNeighbourSocket s = new BoxNeighbourSocket(this.ss.accept());
+				BoxNeighbourSocket s = new BoxNeighbourSocket(this.ss.accept(), this.box);
 				this.box.addNeighbour(s);
 			} catch (IOException e) {
 				e.printStackTrace();

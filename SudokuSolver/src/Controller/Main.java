@@ -12,6 +12,7 @@ public class Main {
     static Box box;
     static String managerAddress;
     static int managerPort;
+    static ManagerConnectionThread thread = null;
     
 
     public static void main(String[] args) {
@@ -20,7 +21,7 @@ public class Main {
             parseArgs(args);
 			System.out.println(Inet4Address.getLocalHost().getHostAddress());
 			System.out.println("I am " + box.getName() + "; Connecting to manager");
-			ManagerConnectionThread thread = new ManagerConnectionThread(managerAddress, managerPort);
+			thread = new ManagerConnectionThread(managerAddress, managerPort, box);
 			thread.start();
 			String messageToManager = box.getName() + ", " + Inet4Address.getLocalHost().getHostAddress() + ", " + box.getServerPort();
 			thread.sendLine(messageToManager);
@@ -91,6 +92,10 @@ public class Main {
             throw new ProcessArgumentException("Manager address not given in process arguments");
         }
         return;
+    }
+    
+    public static void wrapUpConnections() {
+    	//TODO: Triggered when box is finished
     }
 
 }
