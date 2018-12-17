@@ -16,6 +16,7 @@ public class Box {
     public Box() throws IOException {
         this.initializeCells();
         this.serverThread = new BoxServer(this);
+        this.serverThread.start();
     }
     
     // Since cells are objects, initialize each of them manually
@@ -36,10 +37,16 @@ public class Box {
         return this;
     }
     
-    public synchronized Box addNeighbour(BoxNeighbourSocket neighbour) {
-        this.neighbours.add(neighbour);
-        neighbour.start();
-        return this;
+    public Box addNeighbour(BoxNeighbourSocket neighbour) {
+    	synchronized (this.neighbours) {
+	        this.neighbours.add(neighbour);
+	        neighbour.start();
+	        return this;
+    	}
+    }
+    
+    public ArrayList<BoxNeighbourSocket> getNeighbours() {
+    	return this.neighbours;
     }
     
     public Cell getCell(int column, int row) {
@@ -54,9 +61,8 @@ public class Box {
     	String absolute = this.cells[column][row].getAbsoluteCoordinate() + ':' + this.cells[column][row].getValue();
     	PendingMessageHandler.addMessageToPending(relative);
     	PendingMessageHandler.addMessageToPending(absolute);
-    	PendingMessageHandler pmh = new PendingMessageHandler(this.neighbours);
+    	PendingMessageHandler pmh = new PendingMessageHandler(this);
     	pmh.start();
-    	System.out.println(relative + "  " + absolute);
         int emptyCellCounter = 0;
         for (Cell[] cellColumn : this.cells) {
             for (Cell cell : cellColumn) {

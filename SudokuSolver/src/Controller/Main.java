@@ -3,6 +3,8 @@ package Controller;
 import Exception.ProcessArgumentException;
 import Model.Box;
 import Model.ManagerConnectionThread;
+import Model.PendingMessageHandler;
+
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ public class Main {
 				System.out.println(neighbour);
 				thread.sendLine(neighbour);
 			}
+			
 			// TODO: Implement sockets and proper concurrency measures to avoid locking
 			// Connect to Manager and receive neighbour addresses;
 			// Assign neighbour connections to box;
@@ -95,7 +98,7 @@ public class Main {
     }
     
     public static void wrapUpConnections() {
-    	//TODO: Triggered when box is finished
+    	box.printCells();
     }
 
 }
