@@ -40,7 +40,7 @@ public class BoxNeighbourSocket extends ConnectionThread{
 							Cell[] affectedCells = this.box.getAffectedColumn(Integer.parseInt(split[1].substring(0,1)));
 							for (Cell cell: affectedCells) {
 								synchronized (cell) {
-									//TODO: Schöner machen
+									//TODO: Schï¿½ner machen
 									cell.removeFromPossibilities(Integer.parseInt(("" + split[2].charAt(split[2].length() - 1))));
 								}
 							}
@@ -51,7 +51,7 @@ public class BoxNeighbourSocket extends ConnectionThread{
 							Cell[] affectedCells = this.box.getAffectedRow(Integer.parseInt(("" + split[2].charAt(0))));
 							for (Cell cell: affectedCells) {
 								synchronized (cell) {
-									//TODO: Schöner machen
+									//TODO: Schoener machen
 									cell.removeFromPossibilities(Integer.parseInt(("" + split[2].charAt(split[2].length() - 1))));
 								}
 							}
@@ -59,6 +59,13 @@ public class BoxNeighbourSocket extends ConnectionThread{
 						PendingMessageHandler.addMessageToPending(line);
 						pmh = new PendingMessageHandler(this.box);
 						pmh.start();
+						continue;
+					}
+					if (line.matches("^[A-I][1-9]:[1-9]$")) {
+						PendingMessageHandler.addMessageToPending(line);
+						pmh = new PendingMessageHandler(this.box);
+						pmh.start();
+						continue;
 					}
 				} else {
 					break;
