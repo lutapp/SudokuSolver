@@ -119,13 +119,6 @@ public class Main {
 				e.printStackTrace();
 			}
 	    	resultAlreadySent = true;
-	    	try {
-				Thread.sleep(20000);
-				System.exit(0);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
     	}
     }
 
