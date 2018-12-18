@@ -97,8 +97,36 @@ public class Main {
         return;
     }
     
+    private static boolean resultAlreadySent = false;
+    
     public static void wrapUpConnections() {
-    	box.printCells();
+    	if (!resultAlreadySent) {
+	    	box.printCells();
+	    	StringBuilder result = new StringBuilder();
+	    	result.append("RESULT,");
+	    	result.append(box.getName());
+	    	for(int i = 0; i < 3; i++) {
+	    		for(int j = 0; j < 3; j++) {
+	    			result.append(',');
+	    			result.append(box.getCell(j, i).getValue());
+	    		}
+	    	}
+	    	System.out.println(result.toString());
+	    	try {
+				thread.sendLine(result.toString());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    	resultAlreadySent = true;
+	    	try {
+				Thread.sleep(20000);
+				System.exit(0);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
     }
 
 }

@@ -36,11 +36,25 @@ public class BoxNeighbourSocket extends ConnectionThread{
 					if (line.matches("^BOX_[ADG][147],[0-2],[0-2]:[1-9]$")) {
 						if(line.charAt(4) == box.getName().charAt(4)) {
 							String[] split = line.split(",");
-							System.out.println(split[0] + " is in column! Column: " + split[1].charAt(0) + " Value: " + split[2].charAt(split[2].length() - 1));
+							//System.out.println("Message: " + line + "; " + split[0] + " is in column! Column: " + split[1].substring(0,1) + " Value: " + split[2].charAt(split[2].length() - 1));
+							Cell[] affectedCells = this.box.getAffectedColumn(Integer.parseInt(split[1].substring(0,1)));
+							for (Cell cell: affectedCells) {
+								synchronized (cell) {
+									//TODO: Schöner machen
+									cell.removeFromPossibilities(Integer.parseInt(("" + split[2].charAt(split[2].length() - 1))));
+								}
+							}
 						}
 						if (line.charAt(5) == box.getName().charAt(5)) {
 							String[] split = line.split(",");
-							System.out.println(split[0] + " is in column! Column: " + split[2].charAt(0) + " Value: " + split[2].charAt(split[2].length() - 1));
+							//System.out.println("Message: " + line + "; " + split[0] + " is in row! Row: " + split[2].charAt(0) + " Value: " + split[2].charAt(split[2].length() - 1));
+							Cell[] affectedCells = this.box.getAffectedRow(Integer.parseInt(("" + split[2].charAt(0))));
+							for (Cell cell: affectedCells) {
+								synchronized (cell) {
+									//TODO: Schöner machen
+									cell.removeFromPossibilities(Integer.parseInt(("" + split[2].charAt(split[2].length() - 1))));
+								}
+							}
 						}
 						PendingMessageHandler.addMessageToPending(line);
 						pmh = new PendingMessageHandler(this.box);

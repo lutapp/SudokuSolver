@@ -46,7 +46,7 @@ public class ManagerConnectionThread extends ConnectionThread {
 			System.out.println("Connection to manager closed!");
 		} catch (IOException ex) {
 			ex.printStackTrace();
-			System.exit(0);
+			//System.exit(0);
 		}
 	}
 	
