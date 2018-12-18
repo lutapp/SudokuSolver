@@ -25,7 +25,7 @@ public class Main {
 			System.out.println("I am " + box.getName() + "; Connecting to manager");
 			thread = new ManagerConnectionThread(managerAddress, managerPort, box);
 			thread.start();
-			String messageToManager = box.getName() + ", " + Inet4Address.getLocalHost().getHostAddress() + ", " + box.getServerPort();
+			String messageToManager = box.getName() + "," + Inet4Address.getLocalHost().getHostAddress() + "," + box.getServerPort();
 			thread.sendLine(messageToManager);
 			ArrayList<String> neighbours = box.getNeighbourNames();
 			for (String neighbour: neighbours) {

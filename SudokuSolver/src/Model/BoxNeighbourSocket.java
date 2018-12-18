@@ -19,6 +19,7 @@ public class BoxNeighbourSocket extends ConnectionThread{
 		if (this.history.contains(message)) {
 			return;
 		} else {
+			System.out.println("Sending message: " + message);
 			this.sendLine(message);
 			this.history.add(message);
 		}
@@ -33,6 +34,7 @@ public class BoxNeighbourSocket extends ConnectionThread{
 				String line = this.readLine();
 				if (line != null) {
 					line = line.trim();
+					System.out.println("Received message: " + line);
 					if (line.matches("^BOX_[ADG][147],[0-2],[0-2]:[1-9]$")) {
 						if(line.charAt(4) == box.getName().charAt(4)) {
 							String[] split = line.split(",");
