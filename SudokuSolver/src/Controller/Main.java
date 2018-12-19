@@ -44,9 +44,13 @@ public class Main {
 			// Be able to recognize finished state
 			// Send end result to manager
 			// Terminate all connections
-    	} catch (Exception e) {
+		} catch (ProcessArgumentException e) {
+			System.out.println("Usage: Controller.Main <box name> <initial cell values> <manager uri>");
+			e.printStackTrace();
+			System.exit(0);
+		} catch (Exception e) {
             e.printStackTrace();
-            System.exit(0);
+			System.exit(0);
         }
     }
 
