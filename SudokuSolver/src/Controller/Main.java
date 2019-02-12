@@ -10,7 +10,6 @@ import java.net.Inet4Address;
 import java.util.ArrayList;
 
 
-//camel
 public class Main {
     
     static Box box;
@@ -35,17 +34,6 @@ public class Main {
 				thread.sendLine(neighbour);
 			}
 			
-			// TODO: Implement sockets and proper concurrency measures to avoid locking
-			// Connect to Manager and receive neighbour addresses;
-			// Assign neighbour connections to box;
-			// Propagate initial state to neighbours;
-			// Receive and parse messages from neighbours;
-			// Apply gained knowledge to possibleValues list in Cell class;
-			// Propagate new cell value to neighbours if only one possibility remains
-			// Repeat until finished
-			// Be able to recognize finished state
-			// Send end result to manager
-			// Terminate all connections
     	} catch (Exception e) {
             e.printStackTrace();
             System.exit(0);
