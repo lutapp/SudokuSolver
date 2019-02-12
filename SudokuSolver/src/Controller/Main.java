@@ -22,17 +22,6 @@ public class Main {
     	try {
     		box = new Box();
             parseArgs(args);
-			System.out.println(Inet4Address.getLocalHost().getHostAddress());
-			System.out.println("I am " + box.getName() + "; Connecting to manager");
-			thread = new ManagerConnectionThread(managerAddress, managerPort, box);
-			thread.start();
-			String messageToManager = box.getName() + ", " + Inet4Address.getLocalHost().getHostAddress() + ", " + box.getServerPort();
-			thread.sendLine(messageToManager);
-			ArrayList<String> neighbours = box.getNeighbourNames();
-			for (String neighbour: neighbours) {
-				System.out.println(neighbour);
-				thread.sendLine(neighbour);
-			}
 			
     	} catch (Exception e) {
             e.printStackTrace();
@@ -42,7 +31,6 @@ public class Main {
 
     private static void parseArgs(String[] args) throws ProcessArgumentException {
         boolean positionIsKnown = false;
-        boolean managerAddressIsKnown = false;
         
         // Check if arguments have the specified patterns
         for(String arg : args) {
@@ -66,14 +54,6 @@ public class Main {
                 continue;
             }
             
-            // URI of manager
-            if (arg.matches("^(tcp://)([a-zA-Z0-9.:-]+):([0-9]+)$")) {
-                Main.managerAddress = arg.substring(6, arg.lastIndexOf(":"));
-                Main.managerPort = Integer.parseInt(arg.substring(arg.lastIndexOf(":") + 1));
-                managerAddressIsKnown = true;
-                continue;
-            }
-            
             throw new ProcessArgumentException("One or more process arguments do not match the required pattern");
         }
         
@@ -81,35 +61,32 @@ public class Main {
         if (!positionIsKnown) {
             throw new ProcessArgumentException("Box name not given in process arguments");
         }
-        if (!managerAddressIsKnown) {
-            throw new ProcessArgumentException("Manager address not given in process arguments");
-        }
         return;
     }
     
-    private static boolean resultAlreadySent = false;
-    
-    public static void wrapUpConnections() {
-    	if (!resultAlreadySent) {
-	    	box.printCells();
-	    	StringBuilder result = new StringBuilder();
-	    	result.append("RESULT,");
-	    	result.append(box.getName());
-	    	for(int i = 0; i < 3; i++) {
-	    		for(int j = 0; j < 3; j++) {
-	    			result.append(',');
-	    			result.append(box.getCell(j, i).getValue());
-	    		}
-	    	}
-	    	System.out.println(result.toString());
-	    	try {
-				thread.sendLine(result.toString());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	    	resultAlreadySent = true;
-    	}
-    }
+//    private static boolean resultAlreadySent = false;
+//    
+//    public static void wrapUpConnections() {
+//    	if (!resultAlreadySent) {
+//	    	box.printCells();
+//	    	StringBuilder result = new StringBuilder();
+//	    	result.append("RESULT,");
+//	    	result.append(box.getName());
+//	    	for(int i = 0; i < 3; i++) {
+//	    		for(int j = 0; j < 3; j++) {
+//	    			result.append(',');
+//	    			result.append(box.getCell(j, i).getValue());
+//	    		}
+//	    	}
+//	    	System.out.println(result.toString());
+//	    	try {
+//				thread.sendLine(result.toString());
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//	    	resultAlreadySent = true;
+//    	}
+//    }
 
 }

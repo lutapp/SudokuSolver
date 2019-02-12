@@ -10,13 +10,10 @@ public class Box {
 
     private String name;
     private Cell[][] cells = new Cell[3][3];
-    private ArrayList<BoxNeighbourSocket> neighbours = new ArrayList<BoxNeighbourSocket>();
-    private BoxServer serverThread;
+//    private ArrayList<BoxNeighbourSocket> neighbours = new ArrayList<BoxNeighbourSocket>();
 
     public Box() throws IOException {
         this.initializeCells();
-        this.serverThread = new BoxServer(this);
-        this.serverThread.start();
     }
     
     // Since cells are objects, initialize each of them manually
@@ -37,17 +34,17 @@ public class Box {
         return this;
     }
     
-    public Box addNeighbour(BoxNeighbourSocket neighbour) {
-    	synchronized (this.neighbours) {
-	        this.neighbours.add(neighbour);
-	        neighbour.start();
-	        return this;
-    	}
-    }
+//    public Box addNeighbour(BoxNeighbourSocket neighbour) {
+//    	synchronized (this.neighbours) {
+//	        this.neighbours.add(neighbour);
+//	        neighbour.start();
+//	        return this;
+//    	}
+//    }
     
-    public ArrayList<BoxNeighbourSocket> getNeighbours() {
-    	return this.neighbours;
-    }
+//    public ArrayList<BoxNeighbourSocket> getNeighbours() {
+//    	return this.neighbours;
+//    }
     
     public Cell getCell(int column, int row) {
         return this.cells[column][row];
@@ -57,12 +54,10 @@ public class Box {
     // so they know this value is no longer possible for them to have
     public Box setCellValue(int column, int row, int value) {
         this.cells[column][row].setValue(value);
-        String relative = this.name + ',' + this.cells[column][row].getColumn() + ',' + this.cells[column][row].getRow() + ':' + this.cells[column][row].getValue();
-    	String absolute = this.cells[column][row].getAbsoluteCoordinate() + ':' + this.cells[column][row].getValue();
-    	PendingMessageHandler.addMessageToPending(relative);
-    	PendingMessageHandler.addMessageToPending(absolute);
-    	PendingMessageHandler pmh = new PendingMessageHandler(this);
-    	pmh.start();
+//      String relative = this.name + ',' + this.cells[column][row].getColumn() + ',' + this.cells[column][row].getRow() + ':' + this.cells[column][row].getValue();
+//    	PendingMessageHandler.addMessageToPending(relative);
+//    	PendingMessageHandler pmh = new PendingMessageHandler(this);
+//    	pmh.start();
         int emptyCellCounter = 0;
         for (Cell[] cellColumn : this.cells) {
             for (Cell cell : cellColumn) {
@@ -73,7 +68,7 @@ public class Box {
             }
         }
         if (emptyCellCounter == 0) {
-        	Main.wrapUpConnections();
+//        	Main.wrapUpConnections();
         }
         return this;
     }
@@ -133,10 +128,6 @@ public class Box {
     	} else {
     		return null;
     	}
-    }
-    
-    public int getServerPort() {
-    	return this.serverThread.getPort();
     }
     
     // prints current state of the box
