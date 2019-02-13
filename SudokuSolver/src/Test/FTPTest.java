@@ -18,7 +18,7 @@ import sun.net.ftp.FtpProtocolException;
 public class FTPTest {
 
     public static void main(String[] args) {
-        InputStream in = null;
+    	InputStream in = null;
         BufferedReader reader = null;
         OutputStream out = null;
         DataOutputStream writer = null;

@@ -2,7 +2,6 @@ package Controller;
 
 import Exception.ProcessArgumentException;
 import Model.Box;
-import Model.ManagerConnectionThread;
 import Model.PendingMessageHandler;
 
 import java.io.IOException;
@@ -13,16 +12,18 @@ import java.util.ArrayList;
 public class Main {
     
     static Box box;
-    static String managerAddress;
-    static int managerPort;
-    static ManagerConnectionThread thread = null;
     
 
     public static void main(String[] args) {
     	try {
-    		box = new Box();
-            parseArgs(args);
+    		box = new Box("halexander.spdns.de", "m3ntozz911", "S3b4st!anIstT0ll", "/knowledge/");
+    		parseArgs(args);
+    		
 			
+    	} catch (ProcessArgumentException e) {
+			System.out.println("Usage: Controller.Main <box name> <initial cell values> </path/to/dest/>");
+			e.printStackTrace();
+			System.exit(0);
     	} catch (Exception e) {
             e.printStackTrace();
             System.exit(0);

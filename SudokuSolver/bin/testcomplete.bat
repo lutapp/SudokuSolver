@@ -1,9 +1,0 @@
-start java Controller.Main BOX_A1 "00:5, 01:6, 02:1, 10:3, 11:7, 12:9, 20:4, 21:2" tcp://localhost:56789
-start java Controller.Main BOX_A4 "00:8, 01:4, 02:7, 10:5, 11:2, 12:1, 20:9, 21:6" tcp://localhost:56789
-start java Controller.Main BOX_A7 "00:9, 01:2, 02:3, 10:6, 11:8, 12:4, 20:1, 21:7" tcp://localhost:56789
-start java Controller.Main BOX_D1 "00:6, 01:1, 02:3, 10:7, 11:9, 12:4, 20:8, 21:5" tcp://localhost:56789
-start java Controller.Main BOX_D4 "00:7, 01:8, 02:9, 10:6, 11:5, 12:2, 20:1, 21:3" tcp://localhost:56789
-start java Controller.Main BOX_D7 "00:5, 01:4, 02:2, 10:3, 11:1, 12:8, 20:7, 21:9" tcp://localhost:56789
-start java Controller.Main BOX_G1 "00:9, 01:3, 02:5, 10:1, 11:4, 12:6, 20:2, 21:8" tcp://localhost:56789
-start java Controller.Main BOX_G4 "00:4, 01:7, 02:8, 10:2, 11:9, 12:5, 20:3, 21:1" tcp://localhost:56789
-start java Controller.Main BOX_G7 "00:2, 01:6, 02:1, 10:8, 11:3, 12:7, 20:4, 21:5" tcp://localhost:56789

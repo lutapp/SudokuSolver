@@ -1,19 +1,35 @@
 package Model;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import Controller.Main;
+import sun.net.ftp.FtpClient;
+import sun.net.ftp.FtpProtocolException;
 
 public class Box {
 
     private String name;
     private Cell[][] cells = new Cell[3][3];
-//    private ArrayList<BoxNeighbourSocket> neighbours = new ArrayList<BoxNeighbourSocket>();
+    private FtpClient ftp = null;
+    private FTPSendHandler ftpSendHandler = null;
+    private String FTPPath = null;
+    
 
-    public Box() throws IOException {
+    public Box(String domain, String login, String pass, String path) throws IOException {
         this.initializeCells();
+        try {
+        	this.FTPPath = path;
+			this.ftp = FtpClient.create();
+			this.ftp.connect(new InetSocketAddress(domain, 21)).login(login, pass.toCharArray());
+			new FTPPollThread(this.ftp).start();
+			this.ftpSendHandler = new FTPSendHandler(this.ftp);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(865); //Fehlercode 865 ist der beste Code!
+		}
     }
     
     // Since cells are objects, initialize each of them manually
@@ -34,18 +50,6 @@ public class Box {
         return this;
     }
     
-//    public Box addNeighbour(BoxNeighbourSocket neighbour) {
-//    	synchronized (this.neighbours) {
-//	        this.neighbours.add(neighbour);
-//	        neighbour.start();
-//	        return this;
-//    	}
-//    }
-    
-//    public ArrayList<BoxNeighbourSocket> getNeighbours() {
-//    	return this.neighbours;
-//    }
-    
     public Cell getCell(int column, int row) {
         return this.cells[column][row];
     }
@@ -54,10 +58,14 @@ public class Box {
     // so they know this value is no longer possible for them to have
     public Box setCellValue(int column, int row, int value) {
         this.cells[column][row].setValue(value);
-//      String relative = this.name + ',' + this.cells[column][row].getColumn() + ',' + this.cells[column][row].getRow() + ':' + this.cells[column][row].getValue();
-//    	PendingMessageHandler.addMessageToPending(relative);
-//    	PendingMessageHandler pmh = new PendingMessageHandler(this);
-//    	pmh.start();
+        String relative = this.name + ',' + this.cells[column][row].getColumn() + ',' + this.cells[column][row].getRow() + ':' + this.cells[column][row].getValue();
+        try {
+			this.ftpSendHandler.putFile(this.FTPPath, this.name, relative);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(0);
+		}
         int emptyCellCounter = 0;
         for (Cell[] cellColumn : this.cells) {
             for (Cell cell : cellColumn) {
