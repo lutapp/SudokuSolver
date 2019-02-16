@@ -18,10 +18,10 @@ public class Main {
     	try {
     		box = new Box("halexander.spdns.de", "m3ntozz911", "S3b4st!anIstT0ll", "/knowledge/");
     		parseArgs(args);
-    		
+    		box.initializePollThread();
 			
     	} catch (ProcessArgumentException e) {
-			System.out.println("Usage: Controller.Main <box name> <initial cell values> </path/to/dest/>");
+			System.out.println("Usage: Controller.Main <box name> <initial cell values>");
 			e.printStackTrace();
 			System.exit(0);
     	} catch (Exception e) {

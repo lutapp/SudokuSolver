@@ -27,6 +27,7 @@ public class FTPSendHandler {
 				this.ftp.changeDirectory(path);
 			}
 			String correctName = name + '_' + System.currentTimeMillis();
+			System.out.println("\nUploading new file: " + correctName);
 			this.out = this.ftp.putFileStream(correctName + "_temp");			
 			this.writer = new DataOutputStream(out);
 			this.writer.writeBytes(content);
@@ -36,6 +37,7 @@ public class FTPSendHandler {
 			this.ftp.completePending();
 			this.ftp.rename(correctName + "_temp", correctName);
 			this.ftp.changeDirectory("/");
+			System.out.println("Upload successful!");
 		}
 	}
 

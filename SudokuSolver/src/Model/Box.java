@@ -14,7 +14,9 @@ public class Box {
     private Cell[][] cells = new Cell[3][3];
     private FtpClient ftp = null;
     private FTPSendHandler ftpSendHandler = null;
+    private FTPPollThread ftpPollThread = null;
     private String FTPPath = null;
+    private boolean isFinished = false;
     
 
     public Box(String domain, String login, String pass, String path) throws IOException {
@@ -22,14 +24,23 @@ public class Box {
         try {
         	this.FTPPath = path;
 			this.ftp = FtpClient.create();
+			System.out.println("Connecting to FTP server: " + domain);
 			this.ftp.connect(new InetSocketAddress(domain, 21)).login(login, pass.toCharArray());
-			new FTPPollThread(this.ftp).start();
+			System.out.println("Connected to FTP server!");
 			this.ftpSendHandler = new FTPSendHandler(this.ftp);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(865); //Fehlercode 865 ist der beste Code!
 		}
+    }
+    
+    // call this AFTER setName() only
+    public void initializePollThread() {
+    	if (this.ftpPollThread != null) {
+    		return;
+    	}
+    	this.ftpPollThread = new FTPPollThread(this, this.ftp, this.FTPPath, this.getNeighbourNames());
+    	this.ftpPollThread.start();
     }
     
     // Since cells are objects, initialize each of them manually
@@ -75,8 +86,32 @@ public class Box {
                 }
             }
         }
-        if (emptyCellCounter == 0) {
-//        	Main.wrapUpConnections();
+        if (emptyCellCounter == 0 && !isFinished) {
+        	System.out.println("\nBox completed! Wrapping up...");
+        	
+        	if (this.ftpPollThread != null) {
+        		this.ftpPollThread.wrapUpConnections();
+        	} else {
+        		this.initializePollThread();
+        		this.ftpPollThread.wrapUpConnections();
+        	}
+        	
+        	this.isFinished = true;
+        	
+        	StringBuilder result = new StringBuilder();
+	    	result.append("RESULT,");
+	    	result.append(this.getName());
+	    	for(int i = 0; i < 3; i++) {
+	    		for(int j = 0; j < 3; j++) {
+	    			result.append(',');
+	    			result.append(this.getCell(j, i).getValue());
+	    		}
+	    	}
+        	try {
+				this.ftpSendHandler.putFile(this.FTPPath, this.getName() + "_Result", result.toString());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
         }
         return this;
     }
