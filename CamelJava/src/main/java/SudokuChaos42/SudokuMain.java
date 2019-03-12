@@ -62,7 +62,7 @@ public class SudokuMain {
 
 	// Initiale Anfrage an den Boxmanager
 	private static String initializationRequest() throws IOException {
-		URL myurl = new URL("http://" + managerURL + ":" + managerPort + "/api/initialize");
+		URL myurl = new URL("http://" + managerURL + ':' + managerPort + "/api/initialize");
 		HttpURLConnection con = (HttpURLConnection) myurl.openConnection();
 
 		con.setRequestMethod("GET");
@@ -114,7 +114,7 @@ public class SudokuMain {
 
 	// Anfrage, nachdem Box initialisiert ist
 	public static void sendReadyRequest() throws IOException {
-		URL myurl = new URL("http://" + managerURL + "/api/ready?" + URLEncoder.encode("box=" + boxnameRaw, "UTF-8"));
+		URL myurl = new URL("http://" + managerURL + ':' + managerPort + "/api/ready?" + URLEncoder.encode("box=" + boxnameRaw, "UTF-8"));
 		HttpURLConnection con = (HttpURLConnection) myurl.openConnection();
 
 		con.setRequestMethod("GET");
@@ -143,7 +143,7 @@ public class SudokuMain {
 	}
 
 	private static void print() {
-		System.out.println("Manager URL: " + managerURL + "\nMQTT-IP: " + mqttIP + "\nMQTT-Port: " + mqttPort
+		System.out.println("Manager URL: " + managerURL + "\nManager Port: " + managerPort + "\nMQTT-IP: " + mqttIP + "\nMQTT-Port: " + mqttPort
 				+ "\nBoxname: " + boxname + "\nInital state: " + initialState + "\nFTP-Box Java Classpath: " + classpath
 				+ '\n');
 	}
