@@ -31,7 +31,6 @@ public class ProcessorToFtp implements Processor {
 		}
 		
 		if (exchange.getOut().getHeader("type", String.class).equals("start")) {
-			System.out.println("Mudda, isch bin fernsehen!");
 			Main main = new Main();
 			main.addRouteBuilder(new FtpToMqtt(this.boxname, this.boxnameRaw, this.mqttIP, this.mqttPort));
 			main.start();

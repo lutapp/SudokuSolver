@@ -15,6 +15,7 @@ public class SudokuMain {
 	private static int managerPort = 0;
 	private static String mqttIP = "";
 	private static int mqttPort = 0;
+	private static String mqttPrefix = "";
 	private static String boxname = "";
 	private static String boxnameRaw = "";
 	private static String initialState = "";
@@ -85,9 +86,10 @@ public class SudokuMain {
 	// Parsen der Antwort der initialen Anfrage an den Boxmanager
 	private static void parseRequestJson(String json) throws JSONException {
 		JSONObject obj = new JSONObject(json);
-		mqttIP = obj.getString("mqtt-ip");
-		mqttPort = obj.getInt("mqtt-port");
-		boxnameRaw = obj.getString("box").trim();
+		mqttIP = obj.getString("mqtt_ip");
+		mqttPort = obj.getInt("mqtt_port");
+		mqttPrefix = obj.getString("mqtt_prefix");
+		boxnameRaw = obj.getString("boxname").trim();
 		boxname = "BOX_" + boxnameRaw.substring(boxnameRaw.length() - 2, boxnameRaw.length()).toUpperCase();
 		if (obj.has("init")) {
 			JSONArray arr = obj.getJSONArray("init");
