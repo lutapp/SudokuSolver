@@ -12,6 +12,7 @@ import org.json.*;
 public class SudokuMain {
 
 	private static String managerURL = "";
+	private static int managerPort = 0;
 	private static String mqttIP = "";
 	private static int mqttPort = 0;
 	private static String boxname = "";
@@ -51,16 +52,17 @@ public class SudokuMain {
 	}
 
 	private static void parseArgs(String... args) throws Exception {
-		if (args.length != 2) {
-			throw new Exception("Usage: SudokuChaos42.SudokuMain <box manager hostname> <java classpath ftp-box>");
+		if (args.length != 3) {
+			throw new Exception("Usage: SudokuChaos42.SudokuMain <box manager hostname> <box manager port> <java classpath ftp-box>");
 		}
 		managerURL = args[0];
-		classpath = args[1];
+		managerPort = Integer.parseInt(args[1]);
+		classpath = args[2];
 	}
 
 	// Initiale Anfrage an den Boxmanager
 	private static String initializationRequest() throws IOException {
-		URL myurl = new URL("http://" + managerURL + "/api/initialize");
+		URL myurl = new URL("http://" + managerURL + ":" + managerPort + "/api/initialize");
 		HttpURLConnection con = (HttpURLConnection) myurl.openConnection();
 
 		con.setRequestMethod("GET");

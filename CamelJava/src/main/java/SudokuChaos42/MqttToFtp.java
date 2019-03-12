@@ -27,7 +27,7 @@ public class MqttToFtp extends RouteBuilder{
         .process(proc)
         .choice()
         	.when(header("type").isEqualTo("knowledge"))
-        		.to("ftp://127.0.0.1:21/upload/?username=m3ntozz911&password=testpw&passiveMode=true&idempotent=true");
+        		.to("ftp://127.0.0.1:21/knowledge/?username=m3ntozz911&password=testpw&passiveMode=true&idempotent=true");
         
         SudokuMain.sendReadyRequest();
     	

@@ -16,7 +16,7 @@ public class Main {
 
     public static void main(String[] args) {
     	try {
-    		box = new Box("halexander.spdns.de", "m3ntozz911", "S3b4st!anIstT0ll", "/knowledge/");
+    		box = new Box("127.0.0.1", "m3ntozz911", "testpw", "/knowledge/");
     		parseArgs(args);
     		box.initializePollThread();
 			
