@@ -116,7 +116,7 @@ public class SudokuMain {
 
 	// Anfrage, nachdem Box initialisiert ist
 	public static void sendReadyRequest() throws IOException {
-		URL myurl = new URL("http://" + managerURL + ':' + managerPort + "/api/ready?" + URLEncoder.encode("box=" + boxnameRaw, "UTF-8"));
+		URL myurl = new URL("http://" + managerURL + ':' + managerPort + "/api/ready?box=" + boxnameRaw);
 		HttpURLConnection con = (HttpURLConnection) myurl.openConnection();
 
 		con.setRequestMethod("GET");
