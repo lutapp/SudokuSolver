@@ -92,7 +92,7 @@ public class SudokuMain {
 		boxnameRaw = obj.getString("boxname").trim();
 		boxname = "BOX_" + boxnameRaw.substring(boxnameRaw.length() - 2, boxnameRaw.length()).toUpperCase();
 		if (obj.has("init")) {
-			JSONArray arr = obj.getJSONArray("init");
+			JSONArray arr = (new JSONObject("{\"init\" : " + obj.getString("init") + '}')).getJSONArray("init");
 			StringBuilder b = new StringBuilder();
 			for (int i = 0; i < arr.length(); i++) {
 				JSONObject value = arr.getJSONObject(i);
@@ -141,7 +141,7 @@ public class SudokuMain {
 		}
 		b.append('\n');
 		System.out.println(b.toString());
-		//proc.start();
+		proc.start();
 	}
 
 	private static void print() {
