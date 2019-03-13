@@ -132,7 +132,7 @@ public class SudokuMain {
 
 	// Box-Prozess starten
 	private static void startBox() throws IOException {
-		ProcessBuilder proc = new ProcessBuilder("cmd", "/c", "java", "-cp", "\"" + classpath + "\"", "Controller.Main", boxname, initialState);
+		ProcessBuilder proc = new ProcessBuilder("cmd", "/c", "java", "-jar", "\"" + classpath + "\"", "SudokuSolverFTP.jar", boxname, initialState);
 		StringBuilder b = new StringBuilder();
 		b.append("Executing command:\n");
 		for (String single : proc.command()) {

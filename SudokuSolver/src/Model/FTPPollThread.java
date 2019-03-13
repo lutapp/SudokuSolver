@@ -50,7 +50,7 @@ public class FTPPollThread extends Thread {
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
-					System.exit(866); // 866 ist sogar noch 1°C cooler
+					System.exit(866); // 866 ist sogar noch cooler
 				}
 			}
 			try {
