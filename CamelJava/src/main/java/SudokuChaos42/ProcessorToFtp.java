@@ -42,12 +42,12 @@ public class ProcessorToFtp implements Processor {
 
 	// Prüfe, welches Topic die eingehende Message hat
 	private void evaluateExchangeType(Exchange exchange) {
-		if (exchange.getIn().getHeader("CamelMQTTSubscribeTopic", String.class).matches("^sudoku/box_[adg][147]$")) {
+		if (exchange.getIn().getHeader("CamelMQTTSubscribeTopic", String.class).matches("^" + mqttTopic + "/sudoku/box_[adg][147]$")) {
 			exchange.getOut().setHeader("type", "knowledge");
 			return;
 		}
 
-		if (exchange.getIn().getHeader("CamelMQTTSubscribeTopic", String.class).matches("^sudoku/start$")) {
+		if (exchange.getIn().getHeader("CamelMQTTSubscribeTopic", String.class).matches("^" + mqttTopic  +  "/sudoku/start$")) {
 			exchange.getOut().setHeader("type", "start");
 			return;
 		}
