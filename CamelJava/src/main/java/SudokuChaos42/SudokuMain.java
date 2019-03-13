@@ -54,7 +54,7 @@ public class SudokuMain {
 
 	private static void parseArgs(String... args) throws Exception {
 		if (args.length != 3) {
-			throw new Exception("Usage: SudokuChaos42.SudokuMain <box manager hostname> <box manager port> <java classpath ftp-box>");
+			throw new Exception("Usage: SudokuChaos42.SudokuMain <box manager hostname> <box manager port> <path/to/FTP-Box.jar>");
 		}
 		managerURL = args[0];
 		managerPort = Integer.parseInt(args[1]);
@@ -132,7 +132,7 @@ public class SudokuMain {
 
 	// Box-Prozess starten
 	private static void startBox() throws IOException {
-		ProcessBuilder proc = new ProcessBuilder("cmd", "/c", "java", "-jar", "\"" + classpath + "\"", "SudokuSolverFTP.jar", boxname, initialState);
+		ProcessBuilder proc = new ProcessBuilder("cmd", "/c", "java", "-jar", "\"" + classpath + "\"", boxname, initialState);
 		StringBuilder b = new StringBuilder();
 		b.append("Executing command:\n");
 		for (String single : proc.command()) {
