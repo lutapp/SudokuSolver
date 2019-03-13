@@ -13,6 +13,7 @@ public class FTPSendHandler {
 	private FtpClient ftp = null;
 	private OutputStream out = null;
 	private DataOutputStream writer = null;
+	private static long index = 0;
 
 	public FTPSendHandler(FtpClient ftp) {
 		this.ftp = ftp;
@@ -26,7 +27,7 @@ public class FTPSendHandler {
 				this.ftp.makeDirectory(path);
 				this.ftp.changeDirectory(path);
 			}
-			String correctName = name + '_' + System.currentTimeMillis();
+			String correctName = name + '_' + (System.currentTimeMillis() + (++index));
 			System.out.println("\nUploading new file: " + correctName);
 			this.out = this.ftp.putFileStream(correctName + "_temp");			
 			this.writer = new DataOutputStream(out);
