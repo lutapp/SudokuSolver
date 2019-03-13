@@ -12,13 +12,15 @@ public class ProcessorToFtp implements Processor {
 	private String boxnameRaw = null;
 	private String mqttIP = null;
 	private int mqttPort = 0;
+	private String mqttTopic = null;
 	
 	
-	public ProcessorToFtp(String boxname, String boxnameRaw, String mqttIP, int mqttPort) {
+	public ProcessorToFtp(String boxname, String boxnameRaw, String mqttIP, int mqttPort, String mqttTopic) {
 		this.boxname = boxname;
 		this.boxnameRaw = boxnameRaw;
 		this.mqttIP = mqttIP;
 		this.mqttPort = mqttPort;
+		this.mqttTopic = mqttTopic;
 	}
 
 	@Override
@@ -32,7 +34,7 @@ public class ProcessorToFtp implements Processor {
 		
 		if (exchange.getOut().getHeader("type", String.class).equals("start")) {
 			Main main = new Main();
-			main.addRouteBuilder(new FtpToMqtt(this.boxname, this.boxnameRaw, this.mqttIP, this.mqttPort));
+			main.addRouteBuilder(new FtpToMqtt(this.boxname, this.boxnameRaw, this.mqttIP, this.mqttPort, this.mqttTopic));
 			main.start();
 			return;
 		}

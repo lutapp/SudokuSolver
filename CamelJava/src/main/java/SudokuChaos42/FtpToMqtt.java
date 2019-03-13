@@ -11,12 +11,14 @@ public class FtpToMqtt extends RouteBuilder {
     private String boxnameRaw = null;
     private String mqttIP = null;
     private int mqttPort = 0;
+	private String mqttTopic = null;
 	
-	public FtpToMqtt(String boxname, String boxnameRaw, String mqttIP, int mqttPort) {
+	public FtpToMqtt(String boxname, String boxnameRaw, String mqttIP, int mqttPort, String mqttTopic) {
 		this.boxname = boxname;
 		this.boxnameRaw = boxnameRaw;
 		this.mqttIP = mqttIP;
 		this.mqttPort = mqttPort;
+		this.mqttTopic = mqttTopic;
 	}
 	
     public void configure() {
@@ -29,9 +31,9 @@ public class FtpToMqtt extends RouteBuilder {
         		.when(body().isNotEqualTo("duplicate"))
         			.choice()
         				.when(header("type").isEqualTo("knowledge"))
-        					.to("mqtt:bar?host=tcp://" + this.mqttIP + ":" + this.mqttPort+"&publishTopicName=" + this.boxnameRaw)
+        					.to("mqtt:bar?host=tcp://" + this.mqttIP + ":" + this.mqttPort+"&publishTopicName="+ this.mqttTopic + '/' + this.boxnameRaw)
         				.when(header("type").isEqualTo("result"))
-        					.to("mqtt:bar?host=tcp://" + this.mqttIP + ":" + this.mqttPort+"&publishTopicName=" + this.boxnameRaw + "/result");    
+        					.to("mqtt:bar?host=tcp://" + this.mqttIP + ":" + this.mqttPort+"&publishTopicName=" + this.mqttTopic + '/' + this.boxnameRaw + "/result");    
     }
 
 }

@@ -38,7 +38,7 @@ public class SudokuMain {
 			// Camel-Routen initialisieren - startet MQTT to FTP-Route, sendet Ready an Manager, startet nach
 			// Start-Nachricht die FTP to MQTT-Route
 			Main main = new Main();
-			main.addRouteBuilder(new MqttToFtp(boxname, boxnameRaw, mqttIP, mqttPort));
+			main.addRouteBuilder(new MqttToFtp(boxname, boxnameRaw, mqttIP, mqttPort, mqttTopic));
 			main.run();
 		} catch (IOException e) {
 			e.printStackTrace();
